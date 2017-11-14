@@ -1,0 +1,24 @@
+{
+  
+    "manifest_version": 2,
+    "name": "Small note",
+    "version": "1",
+  
+    "description": "This allow user to use a text box to write small notes",
+    "icons": {
+      "48": "icons/icon-48.png"
+    },
+  
+    "permissions": [
+      "storage"
+    ],
+  
+    "browser_action": {
+      "default_icon": {
+       "32" : "icons/icon-48.png"
+      },
+      "default_title": "Small note",
+      "default_popup": "note/note.html"
+    }
+    
+  }
