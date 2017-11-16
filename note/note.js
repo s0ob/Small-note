@@ -1,10 +1,12 @@
 var inputname = document.querySelector('.new-note input');
 var inputbody = document.querySelector('.new-note textarea');
 var notebox = document.querySelector('.note-box');
+var clearbtn = document.querySelector('.clear');
 var addbtn = document.querySelector('.add');
 
 
 addbtn.addEventListener('click', addnote);
+clearbtn.addEventListener('click', clear);
 
 /* display previously saved stored notes on startup */
 
@@ -57,16 +59,18 @@ function displaynote(name, body) {
   var notearea = document.createElement('p');
   var divider = document.createElement('hr');
 
+  var clear = document.createElement('div');
 
   note.setAttribute('class','note');
   notetitle.textContent = name;
   notearea.textContent = body;
   
+  clear.setAttribute('class','clear');
 
   shownote.appendChild(notetitle);
   shownote.appendChild(notearea);
   shownote.appendChild(divider);
-  
+  shownote.appendChild(clear);
 
   note.appendChild(shownote);
 
@@ -74,7 +78,7 @@ function displaynote(name, body) {
   var editnote = document.createElement('div');
   var notenameedit = document.createElement('input');
   var notebodyedit = document.createElement('textarea');
-  
+  var clear2 = document.createElement('div');
 
   
 
@@ -85,8 +89,8 @@ function displaynote(name, body) {
   notebodyedit.textContent = body;
   
 
-  
- 
+  editnote.appendChild(clear2);
+  clear2.setAttribute('class','clear');
 
   note.appendChild(editnote);
 
@@ -94,4 +98,30 @@ function displaynote(name, body) {
   editnote.style.display = 'none';
 
  
+}
+/* update notes */
+function updatenote(delnote,newname,newbody) {
+  var storingnote = browser.storage.local.set({ [newname] : newbody });
+  storingnote.then(() => {
+    if(delnote !== newname) {
+      var removingnote = browser.storage.local.remove(delnote);
+      removingnote.then(() => {
+        displaynote(newname, newbody);
+      }, onError);
+    } else {
+      displaynote(newname, newbody);
+    }
+  }, onError);
+}
+
+function onError(error) {
+  console.log(error);
+}
+/* Clear all notes */
+
+function clear() {
+  while (notebox.firstChild) {
+      notebox.removeChild(notebox.firstChild);
+  }
+  browser.storage.local.clear();
 }
